@@ -1,3 +1,9 @@
+// Simmer & Serve is a complete cooking game for best-cooking-game-20261125-0137.
+// This entry copies game/ and screenshots/ into the output directory and uses the
+// vendored make.fun library to write dossier.json. It enforces scorer limits of
+// 163840 text bytes, four screenshots of 262144 bytes each, 993 game files,
+// 50331648 total game bytes, and 1000 bytes per game path.
+
 // A working best-game-01 entry (Node 22, standard library only): the game is this directory's
 // game/ folder, plain static files a desktop browser loads offline (game/index.html and its ES
 // modules, no library and no network request), and the program hands it in. It copies game/ and
@@ -24,6 +30,8 @@ mkdirSync(out, { recursive: true });
 cpSync(join(here, 'game'), join(out, 'game'), { recursive: true });
 mkdirSync(join(out, 'screenshots'), { recursive: true });
 if (existsSync(join(here, 'screenshots'))) cpSync(join(here, 'screenshots'), join(out, 'screenshots'), { recursive: true });
+const gameEntry = join(out, 'game', 'index.html');
+if (!existsSync(gameEntry)) throw new Error(`Missing game entry file: ${gameEntry}`);
 
 // The scorer's own caps (reference/gate.json): only text_max_bytes shapes the bytes; the others refuse an entry the
 // scorer would refuse (more than 4 screenshots or one over 256 KiB; more than 993 files in game/ or 48 MiB of game
